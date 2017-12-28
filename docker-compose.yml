@@ -1,0 +1,43 @@
+version: '2.2'
+
+services:  
+  elastic:
+    image: danielkalen/elasticsearch
+    restart: always
+    environment:
+      UNICAST_HOSTS: elasticmaster
+      TYPE: GATEWAY
+      CLUSTER: mysample
+      NODE_NAME: gateway
+    ports:
+      - "9200:9200"
+    volumes:
+      - /data
+      - ./elasticsearch.yml:/conf/elasticsearch.yml
+
+  elasticmaster:
+    image: danielkalen/elasticsearch
+    restart: always
+    environment:
+      UNICAST_HOSTS: elastic
+      TYPE: MASTER
+      # MIN_MASTERS: 2
+      CLUSTER: mysample
+      NODE_NAME: master
+    volumes:
+      - /data
+
+  elasticdata:
+    image: danielkalen/elasticsearch
+    restart: always
+    environment:
+      UNICAST_HOSTS: elasticmaster,elastic
+      TYPE: DATA
+      CLUSTER: mysample
+      NODE_NAME: data
+    volumes:
+      - /data
+
+
+volumes:
+  esdata:

@@ -1,0 +1,9 @@
+network.host: 0.0.0.0
+# bootstrap.memory_lock: true
+http:
+  port: 9200
+  cors:
+    enabled: true
+    allow-origin: "*"
+    allow-headers: X-Requested-With,X-Auth-Token,Content-Type,Content-Length,Authorization
+    allow-credentials: true
